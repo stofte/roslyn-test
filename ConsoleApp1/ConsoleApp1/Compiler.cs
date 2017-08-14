@@ -57,7 +57,7 @@
         private static IEnumerable<MetadataReference> GetReferences()
         {
             var refs = new List<MetadataReference>();
-            var json = File.ReadAllText(@"..\..\dlls.json");
+            var json = File.ReadAllText($"{Program.BaseDirectory}/dlls.json");
             var data = JsonConvert.DeserializeObject<IEnumerable<string>>(json);
 
             var filter = new string[] { };
@@ -67,7 +67,7 @@
                 refs.Add(MetadataReference.CreateFromFile(path));
             }
 
-            var consoleAppPath = @"C:\src\roslyn-test\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp1.1\ConsoleApp1.dll";
+            var consoleAppPath = Program.ApplicationImagePath;
             refs.Add(MetadataReference.CreateFromFile(consoleAppPath));
 
             return refs;

@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     public interface IGenerated
     {
@@ -19,9 +20,15 @@
 
     class Program
     {
+        public static string BaseDirectory;
+        public static string ApplicationImagePath;
+
         static void Main(string[] args)
         {
-            var sqlitePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "world.sqlite");
+            ApplicationImagePath = Assembly.GetEntryAssembly().Location;
+            BaseDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(ApplicationImagePath), "..", "..", "..", "..", ".."));
+            Console.WriteLine("ImagePath: {0}", ApplicationImagePath);
+            var sqlitePath = Path.Combine(BaseDirectory, "world.sqlite");
             var connStr = string.Format("Data Source = {0}", sqlitePath);
             var schemaSrc = SchemaSource.Get(connStr, "SqliteWorld");
             var schema = Compiler.Build("schema", schemaSrc);
