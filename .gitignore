@@ -5,3 +5,4 @@ obj
 *.csv
 *.pml
 *-win.json
+data.log
