@@ -63,7 +63,7 @@
             var filter = new string[] { };
             foreach(var path in data)
             {
-                if (filter.Any(f => path.Contains(f))) continue;
+                if (filter.Any(f => path.Contains(f)) || !File.Exists(path)) continue;
                 refs.Add(MetadataReference.CreateFromFile(path));
             }
 
