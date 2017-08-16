@@ -1,7 +1,6 @@
 dotnet clean ConsoleApp1
-sudo auditctl -l
-sudo auditctl -w /home/svend/.nuget/packages -k nuget
-sleep 5
+sudo auditctl -w ~/.nuget/packages -k nuget
+# timestamp to filter audit events
+timestamp=`date -d "-10 seconds" +%H:%M:%S`
 dotnet build ConsoleApp1
-sleep 5
-sudo ausearch -k nuget | aureport -f -i > data.log
+sudo ausearch -ts $timestamp -k nuget | aureport -f -i > data.log
