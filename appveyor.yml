@@ -13,11 +13,10 @@ environment:
   DOTNET_INSTALL_DIR: "$pwd\\.dotnetcli"
 
 install:
-  - ps: Start-FileDownload "$DOTNETCLI_ZIP_URL"
-  - 7z x $env:DOTNETCLI_ZIP_NAME -y -o"%DOTNET_INSTALL_DIR%"
+  - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL"
+  - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
   - dir "%DOTNET_INSTALL_DIR%"
   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
-  - where dotnet
   # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
   # Download install script to install .NET cli in .dotnet dir
   # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
@@ -26,6 +25,7 @@ install:
 
 # need build_script, or appveyor starts looking for a sln file
 build_script:
+  - where dotnet
   - dotnet --info
   - .\DumpDlls.ps1
   - type ConsoleApp1\ConsoleApp1\dlls.json
