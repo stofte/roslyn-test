@@ -9,14 +9,18 @@ environment:
   CLI_VERSION: latest
   CLI_ARCH: x64
   DOTNETCLI_ZIP_NAME: dotnet-sdk-latest-win-x64.zip
-  DOTNETCLI_ZIP_URL: "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/"
+  DOTNETCLI_ZIP_URL: https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/
   DOTNET_INSTALL_DIR: "$pwd\\.dotnetcli"
+  PROCMON_ZIP_NAME: ProcessMonitor.zip
+  PROCMON_ZIP_URL: https://download.sysinternals.com/files/
+  PROCMON_INSTALL_DIR: "$pwd\\.procmon"
 
 install:
   - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL$env:DOTNETCLI_ZIP_NAME"
   - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
-  - dir "%DOTNET_INSTALL_DIR%"
-  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
+  - ps: Start-FileDownload "$env:PROCMON_ZIP_URL$env:PROCMON_ZIP_NAME"
+  - 7z x %PROCMON_ZIP_NAME% -y -o"%APPVEYOR_BUILD_FOLDER%"
+  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:PROCMON_INSTALL_DIR;$env:Path"
   # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
   # Download install script to install .NET cli in .dotnet dir
   # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
@@ -24,7 +28,9 @@ install:
   # - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
 
 # need build_script, or appveyor starts looking for a sln file
+
 build_script:
+  - where procmon
   - where dotnet
   - dotnet --info
   - .\DumpDlls.ps1
