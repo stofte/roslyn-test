@@ -35,3 +35,9 @@ build_script:
 test_script:
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
   - ConsoleApp1\ConsoleApp1\bin\Release\netcoreapp1.1\win10-x64\publish\ConsoleApp1.exe
+
+after_test:
+  - 7z a "ConsoleApp1\ConsoleApp1\bin\Release\netcoreapp1.1\win10-x64\publish" "build.zip"
+
+artifacts:
+  - path: build.zip
