@@ -34,6 +34,8 @@ build_script:
   - where procmon
   - where dotnet
   - dotnet --info
+  - node -v
+  - npm install
   - powershell -NonInteractive -NoProfile -File .\DumpDlls.ps1
   - type ConsoleApp1\ConsoleApp1\dlls.json
   - dotnet restore ConsoleApp1
