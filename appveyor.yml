@@ -31,7 +31,7 @@ build_script:
   - powershell -NonInteractive -NoProfile -File .\DumpDlls.ps1
   - dotnet restore ConsoleApp1
   - dotnet publish -r win10-x64 -f netcoreapp1.1 -c Release ConsoleApp1\ConsoleApp1.sln
-  - powershell -NonInteractive -NoProfile -File .\PackageDlls.ps1 "$env:PUBLISH_FOLDER\\dlls.json"
+  - powershell -NonInteractive -NoProfile -File .\PackageDlls.ps1 "%PUBLISH_FOLDER%\dlls.json"
 
 test_script:
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
