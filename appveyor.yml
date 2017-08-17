@@ -1,3 +1,5 @@
+# https://github.com/dotnet/docs/blob/master/docs/core/tools/dotnet-install-script.md
+
 version: 0.1.0.{build}
 branches:
   only:
@@ -6,13 +8,18 @@ branches:
 environment:
   CLI_VERSION: latest
   CLI_ARCH: x64
-  DOTNETCLI_ZIP_URL: https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1
+  DOTNETCLI_ZIP_NAME: dotnet-sdk-latest-win-x64.zip
+  DOTNETCLI_ZIP_URL: "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/$env:DOTNETCLI_ZIP_NAME"
+  DOTNET_INSTALL_DIR: "$pwd\.dotnetcli"
 
 install:
-  - ps: (new-object net.webclient).DownloadFile('https://download.microsoft.com/download/0/F/D/0FD852A4-7EA1-4E2A-983A-0484AC19B92C/dotnet-sdk-2.0.0-win-gs-x64.exe', 'dotnet-sdk-2.0.0-win-gs-x64')
+  - ps: Start-FileDownload "$DOTNETCLI_ZIP_URL"
+  - 7z x $env:DOTNETCLI_ZIP_NAME -y -o"%DOTNET_INSTALL_DIR%"
+  - dir "%DOTNET_INSTALL_DIR%"
+  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
+  - where dotnet
   # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
   # Download install script to install .NET cli in .dotnet dir
-  # - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetcli"
   # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
   # - ps: '& ./install.ps1 -Channel Release -Version "1.0.4" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath'
   # - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
