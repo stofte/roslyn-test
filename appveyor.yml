@@ -35,7 +35,7 @@ build_script:
 
 test_script:
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
-  - ps: & $env:PUBLISH_FOLDER\\ConsoleApp1.exe
+  - cmd /c %PUBLISH_FOLDER%\ConsoleApp1.exe
 
 after_test:
   - 7z a "%PUBLISH_FOLDER%" "build.zip"
