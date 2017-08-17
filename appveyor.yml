@@ -18,10 +18,11 @@ environment:
 
 install:
   - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL$env:DOTNETCLI_ZIP_NAME"
-  - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
   - ps: Start-FileDownload "$env:PROCMON_ZIP_URL$env:PROCMON_ZIP_NAME"
+  - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
   - 7z x %PROCMON_ZIP_NAME% -y -o"%APPVEYOR_BUILD_FOLDER%"
   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
+  - ps: Install-Product node 8.2.1
   # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
   # Download install script to install .NET cli in .dotnet dir
   # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
