@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Update="dlls.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="world.sqlite" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" />
