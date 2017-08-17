@@ -44,7 +44,14 @@
             var query = Compiler.Build("query", _source, schema.Item2);
             var programType = query.Item1.GetTypes().Single(t => t.Name == "Generated");
             var programInstance = (IGenerated)Activator.CreateInstance(programType);
-            Console.WriteLine("Instance returned {0}", programInstance.DoIt());
+            if (programInstance.DoIt() != 83)
+            {
+                throw new ApplicationException("Expected 83 cities!");
+            } 
+            else
+            {
+                Console.WriteLine("Passed");
+            }
         }
 
         static string _source = @"
@@ -70,5 +77,21 @@ namespace SomeNs
         }
     }
 }";
+    }
+
+    [Serializable]
+    internal class ApplicationException : Exception
+    {
+        public ApplicationException()
+        {
+        }
+
+        public ApplicationException(string message) : base(message)
+        {
+        }
+
+        public ApplicationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }
