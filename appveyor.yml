@@ -19,4 +19,5 @@ install:
 # need build_script, or appveyor starts looking for a sln file
 build_script:
   - dotnet --info
-  - dotnet restore
+  - dotnet restore ConsoleApp1
+  - dotnet run -p ConsoleApp1\ConsoleApp1
