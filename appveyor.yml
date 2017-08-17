@@ -9,11 +9,11 @@ environment:
   CLI_VERSION: latest
   CLI_ARCH: x64
   DOTNETCLI_ZIP_NAME: dotnet-sdk-latest-win-x64.zip
-  DOTNETCLI_ZIP_URL: "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/$env:DOTNETCLI_ZIP_NAME"
+  DOTNETCLI_ZIP_URL: "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/"
   DOTNET_INSTALL_DIR: "$pwd\\.dotnetcli"
 
 install:
-  - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL"
+  - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL$env:DOTNETCLI_ZIP_NAME"
   - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
   - dir "%DOTNET_INSTALL_DIR%"
   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
