@@ -10,7 +10,7 @@ environment:
   CLI_ARCH: x64
   DOTNETCLI_ZIP_NAME: dotnet-sdk-latest-win-x64.zip
   DOTNETCLI_ZIP_URL: "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/$env:DOTNETCLI_ZIP_NAME"
-  DOTNET_INSTALL_DIR: "$pwd\.dotnetcli"
+  DOTNET_INSTALL_DIR: "$pwd`\.dotnetcli"
 
 install:
   - ps: Start-FileDownload "$DOTNETCLI_ZIP_URL"
