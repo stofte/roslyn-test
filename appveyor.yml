@@ -34,7 +34,7 @@ build_script:
   - where procmon
   - where dotnet
   - dotnet --info
-  - .\DumpDlls.ps1
+  - powershell -NonInteractive -NoProfile -File .\DumpDlls.ps1
   - type ConsoleApp1\ConsoleApp1\dlls.json
   - dotnet restore ConsoleApp1
   - dotnet build ConsoleApp1\ConsoleApp1.sln
