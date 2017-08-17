@@ -62,7 +62,12 @@
             var redistFileName = $"{Program.ApplicationFolder}/dlls-redist.json";
             if (File.Exists(redistFileName))
             {
+                Console.WriteLine("Using dlls-redist files");
                 jsonFileName = redistFileName;
+            }
+            else
+            {
+                Console.WriteLine("Using repository files");
             }
             var json = File.ReadAllText(jsonFileName);
             var data = JsonConvert.DeserializeObject<IEnumerable<string>>(json);
