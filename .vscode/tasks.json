@@ -5,6 +5,14 @@
     "args": [],
     "tasks": [
         {
+            "taskName": "restore",
+            "args": [
+                "${workspaceRoot}/ConsoleApp1"
+            ],
+            "isBuildCommand": false,
+            "problemMatcher": "$msCompile"
+        },
+        {
             "taskName": "build",
             "args": [
                 "${workspaceRoot}/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj"
