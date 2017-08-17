@@ -20,6 +20,8 @@ install:
 # need build_script, or appveyor starts looking for a sln file
 build_script:
   - dotnet --info
+  - .\DumpDlls.ps1
+  - type ConsoleApp1\ConsoleApp1\dlls.json
   - dotnet restore ConsoleApp1
   - dotnet build ConsoleApp1\ConsoleApp1.sln
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
