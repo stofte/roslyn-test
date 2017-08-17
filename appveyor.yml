@@ -13,7 +13,7 @@ install:
   # Download install script to install .NET cli in .dotnet dir
   - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetcli"
   - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
-  - ps: '& ./install.ps1 -Channel Release -Version "1.0.4" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath'
+  - ps: '& ./install.ps1 -Channel Release -Version "1.1.2" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath'
   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
 
 # need build_script, or appveyor starts looking for a sln file
@@ -21,4 +21,4 @@ build_script:
   - dotnet --info
   - dotnet restore ConsoleApp1
   - dotnet build ConsoleApp1\ConsoleApp1.sln
-  - dotnet run -p ConsoleApp1\ConsoleApp1
+  - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
