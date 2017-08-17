@@ -9,6 +9,7 @@
     using Microsoft.CodeAnalysis.Emit;
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using System.Text.RegularExpressions;
 
     class Compiler
     {
@@ -57,13 +58,14 @@
         private static IEnumerable<MetadataReference> GetReferences()
         {
             var refs = new List<MetadataReference>();
-            var json = File.ReadAllText($"{Program.BaseDirectory}/dlls.json");
+            var json = File.ReadAllText($"{Program.ApplicationFolder}/dlls.json");
             var data = JsonConvert.DeserializeObject<IEnumerable<string>>(json);
-
-            var filter = new string[] { };
+            var currentRuntime = Program.IsWindows ? "win" : "unix";
+            var otherRuntime = Program.IsWindows ? "unix" : "win";
             foreach(var path in data)
             {
-                if (filter.Any(f => path.Contains(f)) || !File.Exists(path)) continue;
+                // check file presence, and if the path indicates platformness
+                if (!File.Exists(path) || !IsPlatformApplicable(path, currentRuntime, otherRuntime)) continue;
                 refs.Add(MetadataReference.CreateFromFile(path));
             }
 
@@ -71,6 +73,22 @@
             refs.Add(MetadataReference.CreateFromFile(consoleAppPath));
 
             return refs;
+        }
+
+        private static bool IsPlatformApplicable(string path, string currentRuntime, string otherRuntime)
+        {
+
+            var pathSep = Path.DirectorySeparatorChar;
+            var sep = Path.DirectorySeparatorChar == '\\' ? $"\\{Path.DirectorySeparatorChar}" : $"{Path.DirectorySeparatorChar}";
+            var rt = new Regex(string.Format("runtimes{0}{1}", sep, currentRuntime));
+            var ort = new Regex(string.Format("runtimes{0}{1}", sep, otherRuntime));
+            // either we find the current runtime in the path, and not the other,
+            // or we find neither. throw if we find both. and dont link native dlls (sqlite, etc)
+            var isApplicable = rt.IsMatch(path) && !ort.IsMatch(path) || (!rt.IsMatch(path) && !ort.IsMatch(path));
+            var isNative = isApplicable && path.Contains($"{Path.DirectorySeparatorChar}native{Path.DirectorySeparatorChar}");
+            var isConfused = rt.IsMatch(path) && ort.IsMatch(path);
+            if (isConfused) throw new InvalidOperationException("confused about: " + path);
+            return isApplicable && !isNative; // dont link native dlls
         }
     }
 }

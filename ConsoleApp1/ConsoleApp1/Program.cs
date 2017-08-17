@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
 
     public interface IGenerated
     {
@@ -22,10 +23,18 @@
     {
         public static string BaseDirectory;
         public static string ApplicationImagePath;
+        public static string ApplicationFolder;
+        public static bool IsWindows;
 
         static void Main(string[] args)
         {
+            IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (!IsWindows && !RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                throw new PlatformNotSupportedException();
+            }
             ApplicationImagePath = Assembly.GetEntryAssembly().Location;
+            ApplicationFolder = Path.GetDirectoryName(ApplicationImagePath);
             BaseDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(ApplicationImagePath), "..", "..", "..", "..", ".."));
             Console.WriteLine("ImagePath: {0}", ApplicationImagePath);
             var sqlitePath = Path.Combine(BaseDirectory, "world.sqlite");

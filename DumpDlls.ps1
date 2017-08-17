@@ -6,8 +6,6 @@ start-process "procmon.exe" -ArgumentList "/waitforidle" -wait
 dotnet build ConsoleApp1
 start-process "procmon.exe" -ArgumentList "/terminate" -wait
 start-process "procmon.exe" -ArgumentList "/openlog","data.pml","/saveapplyfilter","/saveas data.csv" -wait
+node process-raw.js data.csv > ConsoleApp1\ConsoleApp1\dlls.json
+remove-item (Get-Item data.csv)
 remove-item (Get-Item *.pml) # might generate more then one pml file
-$NewCsv = (Get-Date -Format s).Replace(":", "").Replace("-","") + ".csv"
-$NewJson = (Get-Date -Format s).Replace(":", "").Replace("-","") + "-win.json"
-rename-item (Get-Item data.csv) $NewCsv
-node process-csv.js $NewCsv > $NewJson
