@@ -12,8 +12,7 @@ environment:
   DOTNET_INSTALL_DIR: "$pwd\\.dotnetcli"
   PROCMON_ZIP_NAME: ProcessMonitor.zip
   PROCMON_ZIP_URL: https://download.sysinternals.com/files/
-  PROCMON_INSTALL_DIR: "$pwd\\.procmon"
-  PUBLISH_FOLDER: "$pwd\\ConsoleApp1\\ConsoleApp1\\bin\\Release\\netcoreapp1.1\\win10-x64\\publish"
+  PUBLISH_FOLDER: ".\\ConsoleApp1\\ConsoleApp1\\bin\\Release\\netcoreapp1.1\\win10-x64\\publish"
 
 install:
   - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL$env:DOTNETCLI_ZIP_NAME"
@@ -31,6 +30,7 @@ build_script:
   - powershell -NonInteractive -NoProfile -File .\DumpDlls.ps1
   - dotnet restore ConsoleApp1
   - dotnet publish -r win10-x64 -f netcoreapp1.1 -c Release ConsoleApp1\ConsoleApp1.sln
+  - echo %PUBLISH_FOLDER%
   - powershell -NonInteractive -NoProfile -File .\PackageDlls.ps1 "%PUBLISH_FOLDER%\dlls.json"
 
 test_script:
