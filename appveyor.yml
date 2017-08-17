@@ -20,4 +20,5 @@ install:
 build_script:
   - dotnet --info
   - dotnet restore ConsoleApp1
+  - dotnet build ConsoleApp1\ConsoleApp1.sln
   - dotnet run -p ConsoleApp1\ConsoleApp1
