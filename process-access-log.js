@@ -1,9 +1,9 @@
 const fs = require('fs');
 const csv = require('csv-parser');
 const readline = require('readline');
-const exec = require('child_process');
 
 const inputFileName = process.argv[2];
+const outputFileName = process.argv[3];
 const isWin32 = process.platform === 'win32';
 
 const files = {};
@@ -29,6 +29,7 @@ function rowHandler(data) {
 }
 
 function processLines() {
+    let json = '';
     if (isWin32) {
         Object.keys(files).forEach(k => {
             var m = k.match(/\\([^$\\]+)$/)[1];
@@ -39,12 +40,13 @@ function processLines() {
             }
             return m;
         });
-        const json = JSON.stringify(Object.keys(dlls).map(k => dlls[k]), null, 4);
-        console.log(json);
+        json = JSON.stringify(Object.keys(dlls).map(k => dlls[k]), null, 4);
     } else {
-        const json = JSON.stringify(Object.keys(files), null, 4);
-        console.log(json);
+        json = JSON.stringify(Object.keys(files), null, 4);
     }
+    fs.writeFile(outputFileName, json, (err) => {
+        if (err) console.error(err);
+    });
 }
 
 if (process.platform === 'win32') {

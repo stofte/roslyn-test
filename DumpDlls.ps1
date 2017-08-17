@@ -12,6 +12,7 @@ dotnet build ConsoleApp1
 start-process "procmon.exe" -ArgumentList "/accepteula","/terminate" -wait
 start-process "procmon.exe" -ArgumentList "/accepteula","/openlog","data.pml","/saveapplyfilter","/saveas data.csv" -wait
 write-host "Starting node"
-node process-raw.js data.csv > ConsoleApp1\ConsoleApp1\dlls.json
-# remove-item (Get-Item data.csv)
+node process-access-log.js data.csv ConsoleApp1\ConsoleApp1\dlls.json
+remove-item (Get-Item data.csv)
 remove-item (Get-Item *.pml) # might generate more then one pml file
+dotnet publish --runtime win10-x64 --framework netcoreapp1.1 --configuration Release .\ConsoleApp1\

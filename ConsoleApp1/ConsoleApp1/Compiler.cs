@@ -58,15 +58,26 @@
         private static IEnumerable<MetadataReference> GetReferences()
         {
             var refs = new List<MetadataReference>();
-            var json = File.ReadAllText($"{Program.ApplicationFolder}/dlls.json");
+            var jsonFileName = $"{Program.ApplicationFolder}/dlls.json";
+            var redistFileName = $"{Program.ApplicationFolder}/dlls-redist.json";
+            if (File.Exists(redistFileName))
+            {
+                jsonFileName = redistFileName;
+            }
+            var json = File.ReadAllText(jsonFileName);
             var data = JsonConvert.DeserializeObject<IEnumerable<string>>(json);
             var currentRuntime = Program.IsWindows ? "win" : "unix";
             var otherRuntime = Program.IsWindows ? "unix" : "win";
             foreach(var path in data)
             {
+                string fullPath = path;
+                if (!Path.IsPathRooted(path))
+                {
+                    fullPath = Path.Combine(Program.ApplicationFolder, path);
+                }
                 // check file presence, and if the path indicates platformness
-                if (!File.Exists(path) || !IsPlatformApplicable(path, currentRuntime, otherRuntime)) continue;
-                refs.Add(MetadataReference.CreateFromFile(path));
+                if (!File.Exists(fullPath) || !IsPlatformApplicable(fullPath, currentRuntime, otherRuntime)) continue;
+                refs.Add(MetadataReference.CreateFromFile(fullPath));
             }
 
             var consoleAppPath = Program.ApplicationImagePath;
