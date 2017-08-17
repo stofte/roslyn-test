@@ -20,8 +20,8 @@ install:
   - ps: Start-FileDownload "$env:DOTNETCLI_ZIP_URL$env:DOTNETCLI_ZIP_NAME"
   - 7z x %DOTNETCLI_ZIP_NAME% -y -o"%DOTNET_INSTALL_DIR%"
   - ps: Start-FileDownload "$env:PROCMON_ZIP_URL$env:PROCMON_ZIP_NAME"
-  - 7z x %PROCMON_ZIP_NAME% -y -o"%PROCMON_INSTALL_DIR%"
-  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:PROCMON_INSTALL_DIR;$env:Path"
+  - 7z x %PROCMON_ZIP_NAME% -y -o"%APPVEYOR_BUILD_FOLDER%"
+  - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
   # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
   # Download install script to install .NET cli in .dotnet dir
   # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
@@ -34,18 +34,7 @@ build_script:
   - where procmon
   - where dotnet
   - dotnet --info
-  # - .\DumpDlls.ps1
-  - dotnet clean ConsoleApp1
-  - ps: start-process "procmon.exe" -ArgumentList "/accepteula","/quiet","/minimized","/loadconfig procmon-conf.pmc","/backingfile data.pml"
-  - ps: start-process "procmon.exe" -ArgumentList "/waitforidle" -wait
-  - dotnet build ConsoleApp1
-  - ps: start-process "procmon.exe" -ArgumentList "/terminate" -wait
-  - ps: start-process "procmon.exe" -ArgumentList "/openlog","data.pml","/saveapplyfilter","/saveas data.csv" -wait
-  - node process-raw.js data.csv > ConsoleApp1\ConsoleApp1\dlls.json
-  - ps: remove-item (Get-Item data.csv)
-  - ps: remove-item (Get-Item *.pml) # might generate more then one pml file
-
-
+  - .\DumpDlls.ps1
   - type ConsoleApp1\ConsoleApp1\dlls.json
   - dotnet restore ConsoleApp1
   - dotnet build ConsoleApp1\ConsoleApp1.sln
