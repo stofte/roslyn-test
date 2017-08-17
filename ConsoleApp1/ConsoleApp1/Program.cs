@@ -45,7 +45,6 @@
             var programType = query.Item1.GetTypes().Single(t => t.Name == "Generated");
             var programInstance = (IGenerated)Activator.CreateInstance(programType);
             Console.WriteLine("Instance returned {0}", programInstance.DoIt());
-            Console.ReadKey();
         }
 
         static string _source = @"
