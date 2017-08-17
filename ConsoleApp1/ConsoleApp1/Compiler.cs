@@ -66,6 +66,7 @@
             {
                 // check file presence, and if the path indicates platformness
                 if (!File.Exists(path) || !IsPlatformApplicable(path, currentRuntime, otherRuntime)) continue;
+                Console.WriteLine("Ref: {0}", Path.GetFileName(path));
                 refs.Add(MetadataReference.CreateFromFile(path));
             }
 

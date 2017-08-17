@@ -29,7 +29,8 @@ build_script:
   - npm install
   - powershell -NonInteractive -NoProfile -File .\DumpDlls.ps1
   - dotnet restore ConsoleApp1
-  - dotnet build ConsoleApp1\ConsoleApp1.sln
+  - dotnet publish -r win10-x64 -f netcoreapp1.1 -c Release ConsoleApp1\ConsoleApp1.sln
 
 test_script:
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
+  - ConsoleApp1\ConsoleApp1\bin\Release\netcoreapp1.1\win10-x64\publish\ConsoleApp1.exe
