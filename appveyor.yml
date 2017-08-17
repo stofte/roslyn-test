@@ -8,6 +8,7 @@ branches:
 environment:
   CLI_VERSION: latest
   CLI_ARCH: x64
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNETCLI_ZIP_NAME: dotnet-sdk-latest-win-x64.zip
   DOTNETCLI_ZIP_URL: https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/
   DOTNET_INSTALL_DIR: "$pwd\\.dotnetcli"
