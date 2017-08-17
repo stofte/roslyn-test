@@ -1,5 +1,3 @@
-# https://github.com/dotnet/docs/blob/master/docs/core/tools/dotnet-install-script.md
-
 version: 0.1.0.{build}
 branches:
   only:
@@ -23,13 +21,6 @@ install:
   - 7z x %PROCMON_ZIP_NAME% -y -o"%APPVEYOR_BUILD_FOLDER%"
   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
   - ps: Install-Product node 8.2.1
-  # see https://github.com/enricosada/fsharp-dotnet-cli-samples/blob/master/appveyor.yml
-  # Download install script to install .NET cli in .dotnet dir
-  # - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.4/scripts/obtain/dotnet-install.ps1" -OutFile "$pwd/install.ps1"
-  # - ps: '& ./install.ps1 -Channel Release -Version "1.0.4" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath'
-  # - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
-
-# need build_script, or appveyor starts looking for a sln file
 
 build_script:
   - where procmon
@@ -41,4 +32,6 @@ build_script:
   - type ConsoleApp1\ConsoleApp1\dlls.json
   - dotnet restore ConsoleApp1
   - dotnet build ConsoleApp1\ConsoleApp1.sln
+
+test_script:
   - dotnet run -p .\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj
