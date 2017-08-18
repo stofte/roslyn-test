@@ -109,7 +109,9 @@
             var isNative = isApplicable && path.Contains($"{Path.DirectorySeparatorChar}native{Path.DirectorySeparatorChar}");
             var isConfused = rt.IsMatch(path) && ort.IsMatch(path);
             if (isConfused) throw new InvalidOperationException("confused about: " + path);
-            return isApplicable && !isNative; // dont link native dlls
+            var result = isApplicable && !isNative; // dont link native dlls
+            if (!result) Console.WriteLine("{0} skipped => {1}: {2}/{3}", path, isApplicable, isNative, result);
+            return result;
         }
     }
 }
