@@ -82,7 +82,13 @@
                 }
                 // check file presence, and if the path indicates platformness
                 if (!File.Exists(fullPath) || !IsPlatformApplicable(fullPath, currentRuntime, otherRuntime)) continue;
-                refs.Add(MetadataReference.CreateFromFile(fullPath));
+                try {
+                    var metaRef = MetadataReference.CreateFromFile(fullPath);
+                    refs.Add(metaRef);
+                } catch (Exception exn) {
+                    Console.WriteLine("Failed reference: {0}", fullPath);
+                    Console.WriteLine("Reason: {0}", exn);
+                }
             }
 
             var consoleAppPath = Program.ApplicationImagePath;
@@ -93,7 +99,6 @@
 
         private static bool IsPlatformApplicable(string path, string currentRuntime, string otherRuntime)
         {
-
             var pathSep = Path.DirectorySeparatorChar;
             var sep = Path.DirectorySeparatorChar == '\\' ? $"\\{Path.DirectorySeparatorChar}" : $"{Path.DirectorySeparatorChar}";
             var rt = new Regex(string.Format("runtimes{0}{1}", sep, currentRuntime));
